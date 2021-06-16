@@ -12,3 +12,5 @@ you can refer to this [link](https://developers.google.com/optimization/introduc
 Resources:
 https://developers.google.com/optimization/mip/mip_var_array
 https://www.geeksforgeeks.org/cpp-program-for-topological-sorting/
+
+Solver used: SCIP
