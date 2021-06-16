@@ -19,7 +19,8 @@ vector<string> txn;
 vector<vector<string>> p_txn;
 map<string,int> t_index;
 vector<vector<int>> constraints;
-vector<int> bounds;
+vector<int> ubounds;
+vector<int> lbounds;
 vector<int> selection;
 int n_txn = -1;
 int n_constraints = 1;
@@ -94,7 +95,7 @@ namespace operations_research {
 
         // set constraint coefficients and bounds
         for (int i = 0; i < n_constraints; ++i) {
-            MPConstraint* constraint = solver->MakeRowConstraint(0, bounds[i], "");
+            MPConstraint* constraint = solver->MakeRowConstraint(lbounds[i], ubounds[i], "");
             for (int j = 0; j < n_txn ; ++j) {
                 constraint->SetCoefficient(x[j], constraints[i][j]);
             }
@@ -129,7 +130,8 @@ namespace operations_research {
 
 void get_constraints(){
     constraints.push_back(weight); // set weight constraints
-    bounds.push_back(4000000);
+    ubounds.push_back(4000000);
+    lbounds.push_back(0);
     for(int i = 0; i < n_txn;i++){
         vector<int> C(n_txn,0); 
 
@@ -139,7 +141,8 @@ void get_constraints(){
                 C[t_index[txid]]--;                                     // or 3 * x_i - x_j - x_k - x_l <= 0;
             }
             constraints.push_back(C);                                   // add constraint and bounds;
-            bounds.push_back(0);
+            ubounds.push_back(0);
+            lbounds.push_back(-1*p_txn[i].size())
             n_constraints++;
         }
     }
